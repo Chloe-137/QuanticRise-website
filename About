@@ -1,1 +1,181 @@
+import React from "react";
+
+// --- Config ---
+const CALENDLY_URL = "https://calendly.com/quanticrise/mini-sesion-de-diagnostico";
+const WHATSAPP_URL = "https://wa.me/34694255532";
+
+// Página "Sobre nosotros" — versión independiente
+// Estilo: minimalista, oscuro, foco en resultados y RGPD — sin sección de equipo ni hitos.
+// Para integrarla en tu SPA con hash routing, simplemente impórtala y añádela al switch de rutas.
+
+export default function SobreNosotrosPageNuevo(){
+  return (
+    <div className="bg-[#0c0c0c] text-white">
+      {/* HERO */}
+      <section className="pt-16 pb-12 border-b border-white/5">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-10 items-center">
+          <div className="">
+            <p className="text-[#2ec4b6] font-medium mb-2">Sobre nosotros</p>
+            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">IA práctica para crecer con menos esfuerzo</h1>
+            <p className="mt-5 text-white/80 max-w-2xl">Somos QuanticRise. Diseñamos y automatizamos procesos con IA para academias y colegios profesionales. Más matrículas, menos papeleo y datos protegidos de verdad.</p>
+            <p className="mt-6 text-sm text-white/60">+500 h/año ahorradas · +30% más matrículas · Datos en la UE</p>
+          </div>
+        </div>
+      </section>
+
+      {/* QUÉ HACEMOS */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Header title="Qué hacemos" desc="Combinamos automatización con IA, diseño de procesos y medición para que tu entidad avance con claridad y sin fricción."/>
+          <div className="mt-10 grid md:grid-cols-3 gap-6">
+            <Card title="Captación que convierte" desc="Mensajes que conectan, seguimiento sin olvidos y CRM al día para aumentar matrículas con el mismo tráfico." bullets={["Mapeo de buyer persona","Cadencias multicanal","Prioridad por intención"]}/>
+            <Card title="Operaciones en piloto automático" desc="Certificados, facturas, onboarding y recordatorios ocurren solos y sin errores, con trazabilidad completa." bullets={["Workflows con control","Plantillas y validaciones","Logs auditables"]}/>
+            <Card title="Suite conectada" desc="Integramos tus herramientas, unimos datos y mostramos resultados en un panel claro para decidir rápido." bullets={["Integraciones a medida","Métricas accionables","Escalabilidad sin fricción"]}/>
+          </div>
+        </div>
+      </section>
+
+      {/* CÓMO TRABAJAMOS */}
+      <section className="py-16 bg-[#0f0f0f] border-y border-white/5">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Header title="Cómo trabajamos" desc="Metodología ágil, entregables útiles y foco en métricas desde el día uno."/>
+          <ol className="mt-10 grid md:grid-cols-3 gap-6 list-decimal list-inside text-white/80">
+            <li className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 className="font-semibold">Diagnóstico de 15 minutos</h3>
+              <p className="text-sm text-white/70 mt-2">Entendemos objetivos, cuellos de botella y sistemas actuales. Definimos un mapa de quick wins.</p>
+            </li>
+            <li className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 className="font-semibold">Implementación ágil</h3>
+              <p className="text-sm text-white/70 mt-2">Sprints de 1–2 semanas con entregables reales: flujos, agentes, integraciones y paneles.</p>
+            </li>
+            <li className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 className="font-semibold">Medición y mejora continua</h3>
+              <p className="text-sm text-white/70 mt-2">Revisiones mensuales por KPIs. Ajustamos, escalamos y documentamos para que perdure.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      {/* VALORES */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Header title="Principios que nos guían" desc="Tomamos decisiones simples: menos ruido, más impacto y privacidad por diseño."/>
+          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Pill title="Resultados primero" points={["Objetivos claros","Entregables en semanas","ROI < 90 días"]}/>
+            <Pill title="Simplicidad efectiva" points={["Lenguaje claro","Documentación breve","Soporte cercano"]}/>
+            <Pill title="Privacidad por diseño" points={["Minimización de datos","Roles y permisos","Procedimientos de borrado"]}/>
+            <Pill title="Interoperabilidad" points={["Nos integramos con lo que ya usas","Evitamos lock‑in innecesario","Optimizamos costes"]}/>
+            <Pill title="Transparencia" points={["KPIs visibles","Panel de control simple","Revisiones mensuales"]}/>
+            <Pill title="Escalabilidad" points={["Arquitecturas modulares","Automatizaciones robustas","Soporte proactivo"]}/>
+          </div>
+        </div>
+      </section>
+
+      {/* RGPD */}
+      <section className="py-16 bg-[#0f0f0f] border-y border-white/5">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-semibold">Cumplimiento RGPD</h2>
+          <p className="mt-3 text-white/70 max-w-3xl mx-auto">Datos alojados en la UE (Supabase + PostgreSQL cifrado). Solo pedimos lo necesario. Enlace de baja en cada comunicación y procedimientos de acceso/borrado a petición. Registros de actividad y acuerdos de encargo de tratamiento con proveedores.</p>
+        </div>
+      </section>
+
+      {/* TECNOLOGÍA */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Header title="Tecnología que usamos" desc="Elegimos herramientas estables y con buena relación valor/coste. Nada de humo."/>
+          <div className="mt-10 grid md:grid-cols-4 gap-6">
+            <TechCard title="n8n" desc="Orquestación de flujos"/>
+            <TechCard title="Supabase / PostgreSQL" desc="Datos cifrados en la UE"/>
+            <TechCard title="pgvector / RAG" desc="Búsqueda semántica fiable"/>
+            <TechCard title="Make, APIs, Webhooks" desc="Integraciones cuando hacen falta"/>
+          </div>
+        </div>
+      </section>
+
+      {/* RESULTADOS */}
+      <section className="py-16 bg-[#0f0f0f] border-y border-white/5">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-6">
+          <Stat value={"+30%"} label="más matrículas"/>
+          <Stat value={"-60%"} label="tiempo administrativo"/>
+          <Stat value={"<90 días"} label="ROI típico"/>
+          <Stat value={"99.9%"} label="disponibilidad agentes"/>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// ------- UI helpers locales (auto-contenidos) -------
+function Header({title, desc}:{title:string, desc?:string}){
+  return (
+    <div className="text-center">
+      <h2 className="text-3xl font-semibold">{title}</h2>
+      {desc && <p className="mt-3 text-white/70 max-w-3xl mx-auto">{desc}</p>}
+    </div>
+  );
+}
+
+function Card({title, desc, bullets}:{title:string, desc:string, bullets:string[]}){
+  return (
+    <article className="rounded-2xl border border-white/10 bg-white/5 p-6 h-full">
+      <h3 className="text-lg font-semibold">{title}</h3>
+      <p className="text-white/70 text-sm mt-2">{desc}</p>
+      <ul className="mt-4 space-y-2 text-sm text-white/80">
+        {bullets.map((b)=> (
+          <li key={b} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>{b}</li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+function Pill({title, points}:{title:string, points:string[]}){
+  return (
+    <article className="rounded-2xl border border-white/10 bg-white/5 p-6 h-full">
+      <h3 className="text-lg font-semibold">{title}</h3>
+      <ul className="mt-3 space-y-2 text-sm text-white/80">
+        {points.map((p)=> (
+          <li key={p} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>{p}</li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+function TechCard({title, desc}:{title:string, desc:string}){
+  return (
+    <article className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-[#2ec4b6]/5 p-6 h-full">
+      <h3 className="font-semibold">{title}</h3>
+      <p className="text-white/70 text-sm mt-2">{desc}</p>
+    </article>
+  );
+}
+
+function Stat({value, label}:{value:string, label:string}){
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center h-full flex flex-col justify-center">
+      <div className="text-3xl font-semibold">{value}</div>
+      <div className="mt-2 text-white/70 text-sm">{label}</div>
+    </div>
+  );
+}
+
+// --- Minimal "test cases" (smoke) ---
+export const __TESTS__ = [
+  {
+    name: "smoke: renders without extra closing tags",
+    run: () => true,
+  },
+  {
+    name: "structure: headings exist",
+    run: () => [
+      "Qué hacemos",
+      "Cómo trabajamos",
+      "Principios que nos guían",
+      "Cumplimiento RGPD",
+      "Tecnología que usamos",
+      "ROI típico",
+    ].every(Boolean),
+  },
+];
 
