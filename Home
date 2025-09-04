@@ -1,0 +1,630 @@
+// QuanticRise — SPA con hash routing (rutas simples) — enfoque resultados-first
+// Nicho: academias y colegios profesionales. RGPD y CTA reales.
+
+import React, { useEffect, useMemo, useState } from "react";
+
+// --- Config ---
+const CALENDLY_URL = "https://calendly.com/quanticrise/mini-sesion-de-diagnostico";
+const WHATSAPP_URL = "https://wa.me/34694255532";
+
+// Rutas simplificadas para evitar bloqueos
+const routes = {
+  home: "/",
+  about: "/sobre-nosotros",
+  chatbots: "/desarrollo-de-chatbots",
+  riseleads: "/riseleads",
+  riseflow: "/riseflow",
+  risesuite: "/risesuite",
+  recursos: "/recursos",
+  casos: "/casos-de-exito",
+  faq: "/faq",
+  contacto: "/contacto",
+};
+
+function parseHash(){
+  const h = (typeof window !== 'undefined' ? window.location.hash : "#/" ) || "#/";
+  const p = h.replace(/^#/, "");
+  return p || "/";
+}
+
+// ---- App Root ----
+export default function QuanticRiseSite(){
+  const [path, setPath] = useState(parseHash());
+  useEffect(()=>{
+    const onHash = ()=> setPath(parseHash());
+    window.addEventListener('hashchange', onHash);
+    return ()=> window.removeEventListener('hashchange', onHash);
+  },[]);
+
+  const page = useMemo(()=>{
+    switch(path){
+      case routes.about: return <AboutPage/>;
+      case routes.chatbots: return <ChatbotsPage/>;
+      case routes.riseleads: return <RiseLeadsPage/>;
+      case routes.riseflow: return <RiseFlowPage/>;
+      case routes.risesuite: return <RiseSuitePage/>;
+      case routes.recursos: return <RecursosPage/>;
+      case routes.casos: return <CasosPage/>;
+      case routes.faq: return <FAQPage/>;
+      case routes.contacto: return <ContactoPage/>;
+      case routes.home:
+      default: return <HomePage/>;
+    }
+  },[path]);
+
+  return (
+    <div className="min-h-screen bg-[#0c0c0c] text-white">
+      <Navbar/>
+      <main className="min-h-[70vh]">{page}</main>
+      <Footer/>
+    </div>
+  );
+}
+
+// ---- Shared UI ----
+function Navbar(){
+  return (
+    <header className="sticky top-0 z-30 backdrop-blur bg-[#0c0c0c]/70 border-b border-white/5">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <a href={`#${routes.home}`} className="flex items-center gap-3">
+          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#2ec4b6] to-[#003f5c]"/>
+          <span className="text-lg font-semibold">QuanticRise</span>
+        </a>
+        <nav className="hidden md:flex items-center gap-7 text-sm text-white/80">
+          <a href={`#${routes.about}`} className="hover:text-white">Sobre nosotros</a>
+          <div className="group relative">
+            <a href={`#${routes.riseleads}`} className="hover:text-white">Servicios</a>
+            <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition absolute top-full mt-2 left-0 bg-[#0f0f0f] border border-white/10 rounded-xl shadow-xl p-3 w-64">
+              <a href={`#${routes.riseleads}`} className="block px-3 py-2 rounded-lg hover:bg-white/5">RiseLeads</a>
+              <a href={`#${routes.riseflow}`} className="block px-3 py-2 rounded-lg hover:bg-white/5">RiseFlow</a>
+              <a href={`#${routes.risesuite}`} className="block px-3 py-2 rounded-lg hover:bg-white/5">RiseSuite</a>
+              <a href={`#${routes.chatbots}`} className="block px-3 py-2 rounded-lg hover:bg-white/5">Chatbots</a>
+            </div>
+          </div>
+          <a href={`#${routes.recursos}`} className="hover:text-white">Recursos</a>
+          <a href={`#${routes.casos}`} className="hover:text-white">Casos de éxito</a>
+          <a href={`#${routes.faq}`} className="hover:text-white">FAQ</a>
+          <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-xl px-4 py-2 bg-white text-[#0c0c0c] font-medium">Reserva</a>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+function SectionTitle({eyebrow, title, desc, center=false}){
+  return (
+    <div className={center?"text-center":""}>
+      {eyebrow && <p className="text-[#2ec4b6] font-medium mb-2">{eyebrow}</p>}
+      <h2 className="text-3xl font-semibold">{title}</h2>
+      {desc && <p className={`mt-3 text-white/70 ${center?'mx-auto max-w-3xl':''}`}>{desc}</p>}
+    </div>
+  );
+}
+
+function Bulleted({items}){
+  return (
+    <ul className="mt-4 space-y-2 text-sm text-white/80">
+      {items.map(it=> (
+        <li key={it} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>{it}</li>
+      ))}
+    </ul>
+  );
+}
+
+function Stat({value,label}){
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center h-full flex flex-col justify-center">
+      <div className="text-3xl font-semibold">{value}</div>
+      <div className="mt-2 text-white/70 text-sm">{label}</div>
+    </div>
+  );
+}
+
+function CTAButtons(){
+  return (
+    <div className="mt-8 flex flex-wrap gap-3">
+      <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-2xl px-5 py-3 bg-white text-[#0c0c0c] font-medium hover:bg-[#fbfbfb]">Reserva tu sesión</a>
+      <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="rounded-2xl px-5 py-3 border border-white/10 hover:border-white/30">Escríbenos</a>
+    </div>
+  );
+}
+
+function ServiceMini({title, desc}){
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col h-full">
+      <h3 className="font-semibold">{title}</h3>
+      <p className="text-white/70 text-sm mt-2">{desc}</p>
+      <div className="mt-auto"/>
+    </div>
+  );
+}
+
+function ServiceCard({name, desc, price, items, featured=false, to}){
+  return (
+    <article className={`rounded-3xl p-6 border ${featured? 'border-[#2ec4b6] bg-gradient-to-b from-white/5 to-[#2ec4b6]/5' : 'border-white/10 bg-white/5'} hover:border-white/30 transition flex flex-col`}>
+      <div className="flex items-baseline justify-between gap-4">
+        <h3 className="text-xl font-semibold">{name}</h3>
+        <div className="text-sm text-white/70">{price}</div>
+      </div>
+      <p className="mt-2 text-white/70">{desc}</p>
+      <Bulleted items={items}/>
+      <div className="mt-6 flex gap-3">
+        <a href={`#${to}`} className="rounded-xl px-4 py-2 bg-white text-[#0c0c0c] text-sm font-medium">Ver servicio</a>
+        <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-xl px-4 py-2 border border-white/10 text-sm hover:border-white/30">Solicitar demo</a>
+      </div>
+    </article>
+  );
+}
+
+function CaseCard({title, results}){
+  return (
+    <article className="rounded-2xl border border-white/10 bg-white/5 p-6 h-full">
+      <h3 className="font-semibold">{title}</h3>
+      <ul className="mt-3 space-y-2 text-sm text-white/80">
+        {results.map(r=> (
+          <li key={r} className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>{r}</li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+function GDPRBlock(){
+  return (
+    <section className="py-16 bg-[#0f0f0f] border-y border-white/5">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <SectionTitle title="Cumplimiento RGPD" desc="Datos alojados en la UE (Supabase + PostgreSQL cifrado). Solo pedimos lo necesario. Enlace de baja en cada comunicación y procesos de acceso/borrado a petición." center/>
+      </div>
+    </section>
+  );
+}
+
+function Feature({title, subtitle, points}){
+  return (
+    <article className="rounded-2xl border border-white/10 bg-white/5 p-6 h-full">
+      <div className="text-sm text-white/60">{subtitle}</div>
+      <h3 className="text-lg font-semibold">{title}</h3>
+      <Bulleted items={points}/>
+    </article>
+  );
+}
+
+function Footer(){
+  return (
+    <footer className="border-t border-white/5 py-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8 text-sm">
+        <div>
+          <div className="flex items-center gap-3"><div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#2ec4b6] to-[#003f5c]"/><span className="font-semibold">QuanticRise</span></div>
+          <p className="text-white/60 mt-3">Automatización con IA para academias y colegios profesionales. España · Remoto.</p>
+        </div>
+        <div>
+          <p className="text-white/70 mb-2">Servicios</p>
+          <ul className="space-y-2 text-white/60">
+            <li><a href={`#${routes.riseleads}`}>RiseLeads</a></li>
+            <li><a href={`#${routes.riseflow}`}>RiseFlow</a></li>
+            <li><a href={`#${routes.risesuite}`}>RiseSuite</a></li>
+            <li><a href={`#${routes.chatbots}`}>Chatbots</a></li>
+          </ul>
+        </div>
+        <div>
+          <p className="text-white/70 mb-2">Empresa</p>
+          <ul className="space-y-2 text-white/60">
+            <li><a href={`#${routes.about}`}>Sobre nosotros</a></li>
+            <li><a href={`#${routes.recursos}`}>Recursos</a></li>
+            <li><a href={`#${routes.casos}`}>Casos de éxito</a></li>
+            <li><a href={`#${routes.contacto}`}>Contacto</a></li>
+          </ul>
+        </div>
+        <div>
+          <p className="text-white/70 mb-2">Legal</p>
+          <ul className="space-y-2 text-white/60">
+            <li><a href="#">Aviso legal</a></li>
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      <p className="text-center text-white/45 text-xs mt-6">© {new Date().getFullYear()} QuanticRise · Cumplimos RGPD</p>
+    </footer>
+  );
+}
+
+// ---- PAGES ----
+function HomePage(){
+  return (
+    <>
+      {/* HERO */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">Más alumnos, menos papeleo</h1>
+            <p className="mt-5 text-white/80 max-w-xl">Captamos estudiantes con mensajes que conectan y automatizamos trámites para que tu equipo gane tiempo. Resultados visibles en semanas.</p>
+            <CTAButtons/>
+            <p className="mt-6 text-sm text-white/60">+500 h/año ahorradas · +30% más matrículas</p>
+          </div>
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-2xl border border-white/10 grid grid-cols-2 gap-4 p-4">
+              <ServiceMini title="RiseLeads" desc="Más matrículas con el mismo tráfico"/>
+              <ServiceMini title="RiseFlow" desc="−60% de tareas repetitivas"/>
+              <ServiceMini title="RiseSuite" desc="Todo conectado y medido"/>
+              <ServiceMini title="Chatbots" desc="Atención 24/7 en web y WhatsApp"/>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MÉTRICAS */}
+      <section className="py-16 bg-[#0f0f0f] border-y border-white/5">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-6">
+          <Stat value={"+30%"} label="más matrículas"/>
+          <Stat value={"-60%"} label="tiempo administrativo"/>
+          <Stat value={"<90 días"} label="ROI típico"/>
+          <Stat value={"99.9%"} label="disponibilidad agentes"/>
+        </div>
+      </section>
+
+      {/* TEASER SOBRE NOSOTROS */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <p className="text-[#2ec4b6] font-medium mb-2">Sobre nosotros</p>
+            <h2 className="text-3xl font-semibold">IA práctica, sin humo y con foco en resultados</h2>
+            <p className="mt-3 text-white/70">Trabajamos con academias y colegios profesionales para aumentar matrículas y reducir tareas. Metodología ágil, privacidad por diseño y mejoras mensuales.</p>
+            <ul className="mt-4 space-y-2 text-sm text-white/80">
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Diagnóstico en 15 minutos</li>
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Quick wins medibles en semanas</li>
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Datos alojados en la UE (RGPD)</li>
+            </ul>
+            <div className="mt-6 flex gap-3">
+              <a href={`#${routes.about}`} className="rounded-xl px-4 py-2 bg-white text-[#0c0c0c] text-sm font-medium">Conócenos</a>
+              <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-xl px-4 py-2 border border-white/10 text-sm hover:border-white/30">Reserva mini‑sesión</a>
+            </div>
+          </div>
+          <div className="aspect-video rounded-2xl border border-white/10 bg-gradient-to-br from-[#2ec4b6]/20 to-[#003f5c]/20"/>
+        </div>
+      </section>
+
+      {/* SERVICIOS */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionTitle title="Servicios" desc="Diseñados para conseguir resultados visibles en semanas. Elige uno o combínalos en RiseSuite."/>
+          <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <ServiceCard to={routes.riseleads} name="RiseLeads" price="Setup desde 1.490 € + mensual desde 290 €" desc="Más matrículas con el mismo tráfico" items={["+30% conversión media","Mensajes que conectan","Seguimiento sin olvidos"]}/>
+            <ServiceCard to={routes.riseflow} name="RiseFlow" price="Setup desde 1.990 € + mensual desde 390 €" desc="Menos tareas, menos errores" items={["−60% tiempo administrativo","Certificados automáticos","Recordatorios puntuales"]}/>
+            <ServiceCard to={routes.risesuite} name="RiseSuite" price="Setup a medida + mensual a medida" desc="Todo conectado y medido" items={["Leads + procesos integrados","Panel claro de resultados","Soporte proactivo mensual"]} featured/>
+          </div>
+        </div>
+      </section>
+
+      {/* CASOS */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionTitle title="Casos de éxito" desc="Resultados reales en entidades formativas (nombres anonimizados)."/>
+          <div className="mt-8 grid md:grid-cols-3 gap-6">
+            <CaseCard title="Academia médica (Andalucía)" results={["+42% matrículas en 3 meses","200 h/mes ahorradas","ROI < 60 días"]}/>
+            <CaseCard title="Colegio profesional sanitario" results={["−70% tiempo documental","Trazabilidad 100% RGPD","Satisfacción 7,5 → 9,3"]}/>
+            <CaseCard title="Academia de oposiciones jurídicas" results={["+35% conversión","Onboarding ×2","+22% ingresos en 6 meses"]}/>
+          </div>
+          <div className="mt-8"><a href={`#${routes.casos}`} className="inline-flex rounded-2xl px-5 py-3 border border-white/10 hover:border-white/30">Ver más casos</a></div>
+        </div>
+      </section>
+
+      <GDPRBlock/>
+    </>
+  );
+}
+
+function AboutPage(){
+  return (
+    <section className="py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionTitle eyebrow="Sobre nosotros" title="IA práctica, sin humo y con foco en resultados" desc="Somos QuanticRise: combinamos automatización con IA y diseño de procesos para que tu academia crezca con menos esfuerzo."/>
+
+        {/* Misión + Propuesta */}
+        <div className="mt-10 grid lg:grid-cols-3 gap-8 items-start">
+          <div className="lg:col-span-2 rounded-3xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold">Nuestra misión</h3>
+            <p className="mt-2 text-white/70">Ayudar a entidades formativas a aumentar matrículas y reducir tareas, con sistemas claros, medibles y sostenibles. Sin tecnicismos innecesarios.</p>
+            <h3 className="text-xl font-semibold mt-6">Cómo trabajamos</h3>
+            <ul className="mt-3 space-y-2 text-sm text-white/80">
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Diagnóstico de 15 minutos para entender tu caso.</li>
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Plan de quick wins con métricas de éxito.</li>
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Sprints cortos con entregables útiles.</li>
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Medimos, aprendemos y mejoramos cada mes.</li>
+            </ul>
+          </div>
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/5 to-[#2ec4b6]/5 p-6">
+            <h3 className="text-xl font-semibold">Por qué nos eligen</h3>
+            <ul className="mt-3 space-y-2 text-sm text-white/80">
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Resultados visibles en semanas</li>
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Lenguaje simple y acompañamiento real</li>
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Integración con tus herramientas actuales</li>
+              <li className="flex gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>Privacidad por diseño (RGPD en serio)</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Métricas & Confianza */}
+        <div className="mt-12 grid md:grid-cols-4 gap-6">
+          <Stat value={"+25"} label="procesos automatizados"/>
+          <Stat value={"+120k€"} label="costes ahorrados"/>
+          <Stat value={"4.9/5"} label="satisfacción media"/>
+          <Stat value={"8 semanas"} label="puesta en marcha media"/>
+        </div>
+
+        {/* Equipo / Credenciales */}
+        <div className="mt-12 grid md:grid-cols-3 gap-6 items-start">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-lg font-semibold">Equipo</h3>
+            <p className="text-white/70 text-sm mt-2">Liderado por Chloé, con red de colaboradores expertos en IA, automatización y diseño de servicio.</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-lg font-semibold">Metodología</h3>
+            <p className="text-white/70 text-sm mt-2">Blueprint claro, entregables en cada sprint y revisión mensual por KPIs.</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-lg font-semibold">Confianza</h3>
+            <p className="text-white/70 text-sm mt-2">RGPD, enlace de baja, datos en la UE y contratos de encargo de tratamiento con proveedores.</p>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-12 text-center">
+          <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="inline-flex rounded-2xl px-6 py-3 bg-white text-[#0c0c0c] font-medium">Reserva tu mini‑sesión</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ChatbotsPage(){
+  return (
+    <section className="py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionTitle eyebrow="Agentes conversacionales" title="Chatbots que atienden y convierten" desc="Responden dudas, filtran consultas y agendan llamadas solos. Conectados a tu información para responder bien a la primera."/>
+        <div className="mt-10 grid lg:grid-cols-3 gap-6">
+          <Feature title="Más rápido" subtitle="Respuestas al instante" points={["Atención 24/7","En web y WhatsApp","Sin esperas"]}/>
+          <Feature title="Más claro" subtitle="Conocimiento conectado" points={["Documentos y BBDD","Respuestas precisas","Memoria útil"]}/>
+          <Feature title="Más ventas" subtitle="Acciones automáticas" points={["Agenda de llamadas","Inscripciones y pagos","Seguimiento automático"]}/>
+        </div>
+        <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
+          <h3 className="text-xl font-semibold">Resultados esperados</h3>
+          <Bulleted items={["−40% de consultas repetidas","+20% de solicitudes cualificadas","Mejor experiencia del alumno"]}/>
+          <div className="mt-6 flex gap-3">
+            <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-xl px-4 py-2 bg-white text-[#0c0c0c] text-sm font-medium">Ver demo</a>
+            <a href={`#${routes.faq}`} className="rounded-xl px-4 py-2 border border-white/10 text-sm hover:border-white/30">FAQ</a>
+          </div>
+        </div>
+        <GDPRBlock/>
+      </div>
+    </section>
+  );
+}
+
+function ServiceLayout({title, subtitle, price, promise, bullets}){
+  return (
+    <section className="py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionTitle eyebrow={subtitle} title={title} desc={promise}/>
+        <div className="mt-8 grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 rounded-3xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold">Qué incluye</h3>
+            <Bulleted items={bullets}/>
+            <div className="mt-6 text-sm text-white/60">{price}</div>
+            <div className="mt-6 flex gap-3">
+              <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-xl px-4 py-2 bg-white text-[#0c0c0c] text-sm font-medium">Solicitar propuesta</a>
+              <a href={`#${routes.faq}`} className="rounded-xl px-4 py-2 border border-white/10 text-sm hover:border-white/30">FAQ</a>
+            </div>
+          </div>
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/5 to-[#2ec4b6]/5 p-6">
+            <h3 className="text-xl font-semibold">Resultados esperados</h3>
+            <Bulleted items={["Ahorro de tiempo inmediato","Menos errores","Experiencias más rápidas","Más matrículas"]}/>
+          </div>
+        </div>
+        <section className="mt-12">
+          <SectionTitle title="Casos de éxito (resumen)"/>
+          <div className="mt-6 grid md:grid-cols-3 gap-6">
+            <CaseCard title="Academia médica (Andalucía)" results={["+42% matrículas","200 h/mes ahorradas","ROI < 60 días"]}/>
+            <CaseCard title="Colegio profesional sanitario" results={["−70% tiempo documental","Trazabilidad 100% RGPD","Satisfacción 7,5 → 9,3"]}/>
+            <CaseCard title="Academia de oposiciones jurídicas" results={["+35% conversión","Onboarding ×2","+22% ingresos"]}/>
+          </div>
+        </section>
+        <GDPRBlock/>
+      </div>
+    </section>
+  );
+}
+
+function RiseLeadsPage(){
+  return (
+    <>
+      <section className="pt-16">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-semibold">🚀 ¿Sigues gestionando tus leads de forma manual?</h2>
+          <p className="mt-3 text-white/80">El 80 % de los leads nunca se convierte en clientes… no porque no sean buenos, sino porque se pierden en el camino: falta de seguimiento, respuestas tardías o mensajes genéricos.</p>
+          <p className="mt-4 text-white/80">Con <strong>RiseLeads</strong>, nuestra solución de automatización inteligente, esto cambia:</p>
+          <Bulleted items={[
+            '✅ Hasta 451 % más leads generados',
+            '✅ Seguimiento automatizado que asegura un 95 % de retención de interesados',
+            '✅ Respuesta inmediata (<24h)',
+            '✅ Conversión a reuniones que triplica la media del sector'
+          ]}/>
+          <p className="mt-4 text-white/80">👉 No es magia, es estrategia. Y la estrategia es dejar que la IA trabaje por ti.</p>
+          <p className="mt-2 text-white/80">📌 En QuanticRise ayudamos a empresas a multiplicar sus leads cualificados y reducir drásticamente el coste por adquisición.</p>
+        </div>
+      </section>
+
+      <ServiceLayout
+        title="RiseLeads"
+        subtitle="Captación que convierte"
+        price="Setup desde 1.490 € + mensual desde 290 €"
+        promise="Más matrículas con el mismo tráfico. Te traemos consultas con intención y hacemos el seguimiento automático."
+        bullets={["+30% conversión media (3 meses)","Mensajes que conectan de verdad","Seguimiento automatizado (sin olvidos)","CRM actualizado y oportunidades priorizadas","Informe claro de resultados cada semana"]}
+      />
+    </>
+  );
+}
+
+function RiseFlowPage(){
+  return (
+    <>
+      <section className="pt-16">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-semibold">📑 ¿Sigues gestionando tareas administrativas a mano?</h2>
+          <p className="mt-3 text-white/80">La mayoría de empresas pierde más de 500 horas al año en procesos manuales: facturación, certificados, reportes o emails repetitivos.</p>
+          <p className="mt-4 text-white/80">Con <strong>RiseFlow</strong>, nuestra solución de automatización de procesos, esto cambia:</p>
+          <Bulleted items={[
+            '✅ 80 % menos tiempo dedicado a tareas administrativas',
+            '✅ Procesos sin errores humanos (validación y trazabilidad automáticas)',
+            '✅ Respuesta instantánea a solicitudes internas y de clientes',
+            '✅ Ahorro estimado: +15 000 € al año en horas de trabajo'
+          ]}/>
+          <p className="mt-4 text-white/80">👉 No es magia, es estrategia. Automatiza lo que no aporta valor y dedica tu tiempo a lo que sí hace crecer tu negocio.</p>
+          <p className="mt-2 text-white/80">📌 En QuanticRise ayudamos a empresas a reducir costes y liberar cientos de horas cada año.</p>
+        </div>
+      </section>
+
+      <ServiceLayout
+        title="RiseFlow"
+        subtitle="Administración en piloto automático"
+        price="Setup desde 1.990 € + mensual desde 390 €"
+        promise="Reduce el papeleo y los retrasos. Certificados, facturas, recordatorios y firmas… todo ocurre solo y bien."
+        bullets={["−60% tiempo en tareas repetitivas","Certificados y facturas sin errores","Recordatorios puntuales","Onboarding de alumnos fluido","Panel simple para controlarlo todo"]}
+      />
+    </>
+  );
+}
+
+function RiseSuitePage(){
+  return (
+    <>
+      <section className="pt-16">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-semibold">🌐 ¿Tienes leads entrando, procesos internos funcionando… pero no se conectan entre sí?</h2>
+          <p className="mt-3 text-white/80">El gran problema de muchas empresas no es captar clientes ni gestionar tareas, sino la falta de integración: sistemas aislados que hacen perder tiempo y oportunidades.</p>
+          <p className="mt-4 text-white/80">Con <strong>RiseSuite</strong>, nuestra solución integral, obtienes:</p>
+          <Bulleted items={[
+            '✅ RiseLeads para captar y nutrir interesados automáticamente',
+            '✅ RiseFlow para eliminar cuellos de botella administrativos',
+            '✅ Integraciones avanzadas que conectan todo tu ecosistema (CRM, ERP, RRHH, marketing, finanzas…)',
+            '✅ Escalabilidad lista para el crecimiento: de 10 a 10 000 clientes, sin fricción'
+          ]}/>
+          <p className="mt-4 text-white/80">👉 No es magia, es estrategia. Y la estrategia es tener un sistema que lo unе todo.</p>
+          <p className="mt-2 text-white/80">📌 En QuanticRise ayudamos a empresas a escalar sin límites, reduciendo costes y maximizando resultados.</p>
+        </div>
+      </section>
+
+      <ServiceLayout
+        title="RiseSuite"
+        subtitle="Todo en uno para crecer"
+        price="Setup a medida + mensual a medida"
+        promise="Leads y procesos conectados, agentes 24/7 y métricas claras. Nosotros montamos y mejoramos; tú escalas."
+        bullets={["Leads cualificados + procesos automáticos","Agentes que atienden 24/7","Integraciones cuando hacen falta","Datos claros para decidir rápido","Soporte cercano y mejoras mes a mes"]}
+      />
+    </>
+  );
+}
+
+function RecursosPage(){
+  const items = [
+    {t:'Checklist de Automatización 2025', d:'Detecta cuellos de botella en 12 pasos.', cta:'Descargar →'},
+    {t:'Guía rápida de RAG', d:'Conecta tu base de conocimiento en 1 día.', cta:'Descargar →'},
+    {t:'Plantilla de ROI', d:'Calcula el impacto por proceso.', cta:'Descargar →'},
+    {t:'Playbook de Outreach', d:'Cadencias, guiones y mejores prácticas.', cta:'Descargar →'},
+    {t:'Framework de Métricas', d:'KPIs clave de agentes y flujos.', cta:'Descargar →'},
+    {t:'Checklist RGPD', d:'Buenas prácticas de privacidad.', cta:'Descargar →'},
+  ];
+  return (
+    <section className="py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionTitle title="Recursos" desc="Materiales prácticos para empezar hoy mismo."/>
+        <div className="mt-10 grid md:grid-cols-3 gap-6">
+          {items.map(r=> (
+            <article key={r.t} className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-white/30 transition">
+              <h3 className="font-medium">{r.t}</h3>
+              <p className="mt-2 text-white/70 text-sm">{r.d}</p>
+              <div className="mt-4 text-sm text-[#2ec4b6]">{r.cta}</div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CasosPage(){
+  return (
+    <section className="py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionTitle title="Casos de éxito" desc="Resultados reales (nombres anonimizados por confidencialidad)."/>
+        <div className="mt-10 grid md:grid-cols-3 gap-6">
+          <CaseCard title="Academia médica (Andalucía)" results={["+42% matrículas en 3 meses","200 h/mes ahorradas","ROI < 60 días"]}/>
+          <CaseCard title="Colegio profesional sanitario" results={["−70% tiempo en certificados/facturas","Trazabilidad 100% RGPD","Satisfacción 7,5 → 9,3"]}/>
+          <CaseCard title="Academia de oposiciones jurídicas" results={["+35% conversión","Onboarding ×2 más rápido","+22% ingresos en 6 meses"]}/>
+        </div>
+        <GDPRBlock/>
+      </div>
+    </section>
+  );
+}
+
+function FAQPage(){
+  const faqs = [
+    {q:'¿Cuándo se ven resultados?', a:'En 2–4 semanas notarás mejoras en tiempos y conversión. En proyectos completos, el ROI típico llega en menos de 90 días.'},
+    {q:'¿Cumplís el RGPD?', a:'Sí. Datos en la UE (Supabase + PostgreSQL cifrado), minimización de datos, roles y permisos, logs auditables y enlace de baja en outreach.'},
+    {q:'¿Tengo que cambiar mis herramientas?', a:'No siempre. Nos integramos con lo que ya usas y proponemos cambios solo cuando aportan valor real.'},
+    {q:'¿Podemos empezar con un piloto?', a:'Sí. Definimos un piloto pequeño para demostrar valor rápido y validar supuestos.'},
+    {q:'¿Ofrecéis mantenimiento?', a:'Sí. Planes Basic/Pro/Premium con monitoreo, mejoras mensuales y soporte priorizado.'},
+  ];
+  return (
+    <section className="py-20">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <SectionTitle title="Preguntas frecuentes" center/>
+        <div className="mt-10 divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/5">
+          {faqs.map(f=> (
+            <details key={f.q} className="group p-6 open:bg-white/5">
+              <summary className="list-none cursor-pointer flex items-center justify-between"><span className="font-medium">{f.q}</span><span className="text-white/50 group-open:rotate-45 transition">+</span></summary>
+              <p className="mt-3 text-white/70 text-sm">{f.a}</p>
+            </details>
+          ))}
+        </div>
+        <div className="mt-8 text-center"><a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="inline-flex rounded-2xl px-5 py-3 bg-white text-[#0c0c0c] font-medium hover:bg-[#fbfbfb]">Reserva mini‑sesión</a></div>
+        <GDPRBlock/>
+      </div>
+    </section>
+  );
+}
+
+function ContactoPage(){
+  return (
+    <section className="py-20">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <SectionTitle title="Hablemos" desc="Reserva una mini‑asesoría gratuita de 15 minutos. Si encaja, te preparamos propuesta en 48h." center/>
+        <div className="mt-8 grid md:grid-cols-2 gap-6">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold">Reserva directa</h3>
+            <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-xl px-4 py-2 bg-white text-[#0c0c0c] text-sm font-medium">Abrir Calendly</a>
+            <p className="text-white/50 text-xs mt-4">O escríbenos por WhatsApp.</p>
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="mt-2 inline-flex rounded-xl px-4 py-2 border border-white/10 text-sm hover:border-white/30">Abrir WhatsApp</a>
+          </div>
+          <form className="rounded-2xl border border-white/10 bg-white/5 p-6 space-y-4">
+            <div>
+              <label className="text-sm text-white/70">Nombre</label>
+              <input className="mt-1 w-full rounded-xl bg-[#0c0c0c] border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#2ec4b6]" placeholder="Tu nombre"/>
+            </div>
+            <div>
+              <label className="text-sm text-white/70">Email</label>
+              <input type="email" className="mt-1 w-full rounded-xl bg-[#0c0c0c] border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#2ec4b6]" placeholder="tu@empresa.com"/>
+            </div>
+            <div>
+              <label className="text-sm text-white/70">Mensaje</label>
+              <textarea rows={4} className="mt-1 w-full rounded-xl bg-[#0c0c0c] border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#2ec4b6]" placeholder="Cuéntanos brevemente tu caso"/>
+            </div>
+            <button type="button" className="w-full rounded-xl px-4 py-2 bg-white text-[#0c0c0c] text-sm font-medium">Enviar (placeholder)</button>
+            <p className="text-white/50 text-xs">Al enviar aceptas nuestra política de privacidad.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+}
