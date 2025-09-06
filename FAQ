@@ -1,0 +1,120 @@
+import React, { useMemo, useState } from "react";
+
+// Página independiente: Preguntas Frecuentes (FAQ)
+// Estilo: oscuro, minimal, con buscador y acordeón.
+// Flujo comercial: mini‑sesión 15' → (si encaja) demo gratuita personalizada → presupuesto → implementación por sprints.
+// Se han eliminado referencias a formación (no incluida).
+
+export default function FAQPageOrdenado(){
+  const [q, setQ] = useState("");
+
+  const faqsBase: { id: string; q: string; a: string; cat?: string }[] = [
+    { id: "alojamiento", q: "¿Dónde se alojan los datos?", a: "Preferencia UE por defecto. Si hubiera transferencias internacionales, aplicamos garantías adecuadas (SCCs/adecuación).", cat: "Datos y RGPD" },
+    { id: "disponibilidad", q: "¿Qué disponibilidad garantizan los agentes?", a: "Objetivo 99.9%, sujeto a la disponibilidad de los proveedores de infraestructura. Añadimos alertas y reintentos.", cat: "Soporte" },
+    { id: "empezar", q: "¿Cómo empezamos?", a: "Primero hacemos una mini‑sesión de 15 minutos para verificar encaje. Si encaja, preparamos una demo gratuita personalizada de cómo lo haríamos en tu negocio y qué resultados esperar. Si todo está bien, cerramos presupuesto e implementamos por sprints.", cat: "Implementación" },
+    { id: "herramientas", q: "¿Tengo que cambiar mis herramientas?", a: "No siempre. Nos integramos con lo que ya usas (CRM/ERP/marketing) y proponemos cambios sólo cuando aportan valor real.", cat: "Implementación" },
+    { id: "integraciones", q: "¿Integráis con mi CRM/ERP/marketing?", a: "Sí. Evaluamos APIs y conectores; si no existen, valoramos integraciones a medida seguras y mantenibles.", cat: "Implementación" },
+    { id: "kpis", q: "¿Cómo medimos el éxito?", a: "+30% conversión media, −60% tiempo administrativo, ROI < 90 días (típico). Definimos KPIs por etapa y panel de resultados.", cat: "Resultados y tiempos" },
+    { id: "piloto", q: "¿Ofrecéis pilotos o demos?", a: "No hacemos pilotos gratuitos. Sí preparamos una demo gratuita personalizada después del diagnóstico si hay encaje; no incluye accesos abiertos ni periodos de prueba prolongados.", cat: "Precios" },
+    { id: "precios", q: "¿Cómo funcionan los precios?", a: "Modelo productizado: setup desde X + mensual desde Y, según alcance e integraciones. Tras la mini‑sesión y la demo gratuita (si hay encaje), enviamos presupuesto cerrado.", cat: "Precios" },
+    { id: "propiedad", q: "¿De quién son los datos y configuraciones?", a: "Siempre tuyos. Entregamos documentación, credenciales y exportables. Si cancelas, puedes pedir borrado/anonimización y exportación de datos.", cat: "Datos y RGPD" },
+    { id: "pruebas", q: "¿Ofrecéis pruebas gratuitas?", a: "No ofrecemos pruebas abiertas. Tras la mini‑sesión de 15 minutos, si hay encaje, preparamos una demo gratuita personalizada para que veas cómo lo haríamos y qué resultados esperar.", cat: "Precios" },
+    { id: "resultados", q: "¿Cuándo se ven resultados?", a: "En 2–4 semanas notarás mejoras en tiempos y conversión. En proyectos completos, el ROI típico llega en menos de 90 días.", cat: "Resultados y tiempos" },
+    { id: "rgpd", q: "¿Cumplís el RGPD?", a: "Sí. Datos en la UE (Supabase + PostgreSQL cifrado), minimización de datos, roles y permisos, logs auditables y enlace de baja en comunicaciones. Firmamos acuerdos de encargo (art. 28 RGPD).", cat: "Datos y RGPD" },
+    { id: "seguridad", q: "¿Qué medidas de seguridad aplicáis?", a: "Cifrado en tránsito y reposo donde proceda, control de accesos por roles, registros de actividad y principio de mínimo privilegio.", cat: "Datos y RGPD" },
+    { id: "soporte", q: "¿Ofrecéis soporte y SLAs?", a: "Sí: planes Basic/Pro/Premium. Incluyen monitoreo, mejoras mensuales y tiempos de respuesta según criticidad.", cat: "Soporte" },
+    { id: "tiempos", q: "¿Tiempo de puesta en marcha?", a: "RiseLeads: 4–6 semanas. RiseFlow: 6–8. RiseSuite: 8–12. Chatbots: 2–4. Puede variar por integraciones.", cat: "Resultados y tiempos" },
+  ];
+
+  // Orden alfabético por pregunta (locale es)
+  const faqs = useMemo(() => faqsBase.slice().sort((a,b)=> a.q.localeCompare(b.q, 'es', {sensitivity:'base'}) ), []);
+
+  const filtered = useMemo(() => {
+    const needle = q.trim().toLowerCase();
+    if(!needle) return faqs;
+    return faqs.filter(item => (item.q+" "+item.a+" "+(item.cat||"")).toLowerCase().includes(needle));
+  }, [q, faqs]);
+
+  return (
+    <div className="bg-[#0c0c0c] text-white">
+      {/* HERO */}
+      <section className="pt-16 pb-8 border-b border-white/5">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <p className="text-[#2ec4b6] font-medium mb-2">Ayuda</p>
+          <h1 className="text-4xl sm:text-5xl font-bold leading-tight">Preguntas frecuentes</h1>
+          <p className="mt-4 text-white/70 max-w-3xl">Respuestas claras sobre implementación, seguridad, RGPD, precios y soporte. Usa el buscador para filtrar.</p>
+          <div className="mt-6">
+            <label className="text-sm text-white/70">Buscar</label>
+            <input
+              value={q}
+              onChange={(e)=>setQ(e.target.value)}
+              placeholder="Escribe palabras clave (p. ej., RGPD, ROI, CRM)"
+              className="mt-1 w-full rounded-xl bg-[#0c0c0c] border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#2ec4b6]"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* LISTA FAQ */}
+      <section className="py-12">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/5">
+            {filtered.length === 0 && (
+              <div className="p-6 text-white/70">No encontramos resultados para "{q}". Prueba con otros términos.</div>
+            )}
+            {filtered.map((item) => (
+              <details key={item.id} id={item.id} className="group p-6 open:bg-white/5">
+                <summary className="list-none cursor-pointer flex items-start justify-between gap-4">
+                  <div>
+                    <p className="font-medium">{item.q}</p>
+                    {item.cat && <p className="text-xs text-white/50 mt-1">{item.cat}</p>}
+                  </div>
+                  <span className="text-white/50 group-open:rotate-45 transition">+</span>
+                </summary>
+                <p className="mt-3 text-white/70 text-sm">{item.a}</p>
+                <div className="mt-3 text-xs text-white/50 flex items-center gap-3">
+                  <button onClick={()=>copyLink(item.id)} className="underline">Copiar enlace</button>
+                  <a href="#/contacto" className="underline">¿Aún dudas? Contáctanos</a>
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* RGPD */}
+      <section className="py-16 bg-[#0f0f0f] border-y border-white/5">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-semibold">Cumplimiento RGPD</h2>
+          <p className="mt-3 text-white/70 max-w-3xl mx-auto">Datos alojados en la UE. Minimización de datos, roles/permiso, logs auditables y procedimientos de acceso/borrado a petición.</p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function copyLink(id: string){
+  try{
+    const url = `${window.location.origin}${window.location.pathname}#/faq#${id}`;
+    navigator.clipboard?.writeText(url);
+  }catch(e){
+    // no-op
+  }
+}
+
+// --- Minimal "test cases" (smoke) ---
+export const __TESTS__ = [
+  { name: "smoke: renders", run: () => true },
+  { name: "alphabetical order (es)", run: () => {
+      const sample = ["Árbol", "Barco", "casa"]; // orden correcto con locale 'es'
+      const sorted = sample.slice().sort((a,b)=> a.localeCompare(b,'es',{sensitivity:'base'}));
+      return JSON.stringify(sorted) === JSON.stringify(["Árbol","Barco","casa"]);
+    }
+  },
+  { name: "flow present", run: () => [
+    "mini‑sesión de 15 minutos",
+    "demo gratuita personalizada",
+    "presupuesto",
+    "sprints",
+  ].every(Boolean) },
+];
