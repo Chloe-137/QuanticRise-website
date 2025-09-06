@@ -1,4 +1,3 @@
-@@ .. @@
  // QuanticRise — SPA con hash routing (rutas simples) — enfoque resultados-first
  // Nicho: academias y colegios profesionales. RGPD y CTA reales.
 
@@ -13,7 +12,6 @@
  const routes = {
    home: "/",
    about: "/sobre-nosotros",
- }
 +  servicios: "/servicios",
    chatbots: "/desarrollo-de-chatbots",
    riseleads: "/riseleads",
@@ -22,9 +20,6 @@
    const page = useMemo(()=>{
      switch(path){
      }
-   }
-   )
--      case routes.about: return <AboutPage/>;
 +      case routes.about: return <SobreNosotrosPageNuevo/>;
 +      case routes.servicios: return <ServiciosPageNuevo/>;
        case routes.chatbots: return <ChatbotsPage/>;
@@ -40,6 +35,13 @@
        default: return <HomePage/>;
 @@ .. @@
          <nav className="hidden md:flex items-center gap-7 text-sm text-white/80">
+
+  return (
+    <div className="min-h-screen bg-black text-white">
+      {page}
+    </div>
+  );
+}
            <a href={`#${routes.about}`} className="hover:text-white">Sobre nosotros</a>
            <div className="group relative">
 -            <a href={`#${routes.riseleads}`} className="hover:text-white">Servicios</a>
