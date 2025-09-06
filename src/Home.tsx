@@ -2,9 +2,9 @@
  // Nicho: academias y colegios profesionales. RGPD y CTA reales.
 
  import React, { useEffect, useMemo, useState } from "react";
-+import SobreNosotrosPageNuevo from "./About";
-+import FAQPageOrdenado from "./FAQ";
-+import ServiciosPageNuevo from "./Servicios";
+import SobreNosotrosPageNuevo from "./About";
+import FAQPageOrdenado from "./FAQ";
+import ServiciosPageNuevo from "./Servicios";
 
  // --- Config ---
  const CALENDLY_URL = "https://calendly.com/quanticrise/mini-sesion-de-diagnostico";
