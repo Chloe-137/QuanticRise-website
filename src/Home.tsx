@@ -58,3 +58,5 @@ import ServiciosPageNuevo from "./Servicios";
             <li><a href={`#${routes.riseleads}`}>RiseLeads</a></li>
             <li><a href={`#${routes.riseflow}`}>RiseFlow</a></li>
             <li><a href={`#${routes.risesuite}`}>RiseSuite</a></li>
+
+export default routes
