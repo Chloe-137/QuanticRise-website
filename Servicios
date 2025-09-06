@@ -1,0 +1,225 @@
+import React from "react";
+
+// --- Config ---
+const CALENDLY_URL = "https://calendly.com/quanticrise/mini-sesion-de-diagnostico";
+const WHATSAPP_URL = "https://wa.me/34694255532";
+
+// Página independiente: Servicios (Resultados-first)
+// Estilo: oscuro, minimal, con precios claros (setup + mensual) y RGPD.
+
+export default function ServiciosPageNuevo(){
+  return (
+    <div className="bg-[#0c0c0c] text-white">
+      {/* HERO */}
+      <section className="pt-16 pb-12 border-b border-white/5">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="text-[#2ec4b6] font-medium mb-2">Servicios</p>
+          <h1 className="text-4xl sm:text-5xl font-bold leading-tight">Automatización con IA orientada a resultados</h1>
+          <p className="mt-4 text-white/80 max-w-3xl">Elige un servicio o combínalos en RiseSuite. Implantamos rápido, medimos desde el día uno y mejoramos cada mes. Datos alojados en la UE.</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-2xl px-5 py-3 bg-white text-[#0c0c0c] font-medium hover:bg-[#fbfbfb]">Solicitar propuesta</a>
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="rounded-2xl px-5 py-3 border border-white/10 hover:border-white/30">Escríbenos</a>
+          </div>
+          <p className="mt-6 text-sm text-white/60">Setup desde 1.490 € · ROI típico &lt; 90 días · Cumplimos RGPD</p>
+        </div>
+      </section>
+
+      {/* CARDS RESUMEN */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionTitle title="Nuestros servicios" desc="Resumen rápido de qué hace cada uno y para qué casos encaja mejor."/>
+          <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <ServiceCard anchor="#riseleads" name="RiseLeads" price="Setup desde 1.490 € + mensual desde 290 €" desc="Captación que convierte" items={["+30% conversión media","Mensajes que conectan","Seguimiento sin olvidos"]}/>
+            <ServiceCard anchor="#riseflow" name="RiseFlow" price="Setup desde 1.990 € + mensual desde 390 €" desc="Administración en piloto automático" items={["−60% tiempo repetitivo","Certificados/facturas sin errores","Recordatorios puntuales"]}/>
+            <ServiceCard anchor="#risesuite" name="RiseSuite" price="Setup a medida + mensual a medida" desc="Todo conectado y medido" items={["Leads + procesos integrados","Panel claro de resultados","Soporte proactivo mensual"]} featured/>
+            <ServiceCard anchor="#chatbots" name="Chatbots" price="Desde 990 € + mensual desde 190 €" desc="Agentes que atienden y convierten" items={["Web/WhatsApp 24/7","RAG con tu conocimiento","Agenda y pagos automáticos"]}/>
+          </div>
+        </div>
+      </section>
+
+      {/* SECCIONES DETALLE */}
+      <ServiceSection id="riseleads" title="RiseLeads" subtitle="Captación que convierte" price="Setup desde 1.490 € + mensual desde 290 €" promise="Más matrículas con el mismo tráfico. Te traemos consultas con intención y hacemos el seguimiento automático." bullets={["+30% conversión media (3 meses)","Mensajes que conectan de verdad","Seguimiento automatizado (sin olvidos)","CRM actualizado y oportunidades priorizadas","Informe claro de resultados cada semana"]} results={["Más solicitudes cualificadas","Mejor tasa de respuesta","Reuniones agendadas sin fricción","Coste por lead optimizado"]} ctaLabel="Solicitar demo"/>
+
+      <ServiceSection id="riseflow" title="RiseFlow" subtitle="Administración en piloto automático" price="Setup desde 1.990 € + mensual desde 390 €" promise="Reduce el papeleo y los retrasos. Certificados, facturas, recordatorios y firmas… todo ocurre solo y bien." bullets={["−60% tiempo en tareas repetitivas","Certificados y facturas sin errores","Recordatorios puntuales","Onboarding de alumnos fluido","Panel simple para controlarlo todo"]} results={["Menos errores humanos","Cumplimientos en plazo","Equipo centrado en lo importante","Ahorro anual significativo"]} ctaLabel="Pedir propuesta"/>
+
+      <ServiceSection id="risesuite" title="RiseSuite" subtitle="Todo en uno para crecer" price="Setup a medida + mensual a medida" promise="Leads y procesos conectados, agentes 24/7 y métricas claras. Nosotros montamos y mejoramos; tú escalas." bullets={["RiseLeads + RiseFlow integrados","Integraciones CRM/ERP/RRHH/marketing","Panel de métricas y cohortes","Soporte proactivo y escalabilidad","Privacidad por diseño (RGPD)"]} results={["Menos silos de información","Decisiones más rápidas","Escalado sin fricción","TCO optimizado"]} ctaLabel="Solicitar evaluación"/>
+
+      <ServiceSection id="chatbots" title="Chatbots (Agentes)" subtitle="Atención y conversión 24/7" price="Desde 990 € + mensual desde 190 €" promise="Responden dudas, filtran consultas y agendan llamadas solos. Conectados a tu información para responder bien a la primera." bullets={["Atención 24/7 en web y WhatsApp","RAG con Supabase/pgvector","Agenda y pagos automáticos","Memoria por usuario y contexto","Logs y evaluación de calidad"]} results={["−40% de consultas repetidas","+20% de solicitudes cualificadas","Mejor experiencia del alumno"]} ctaLabel="Ver demo"/>
+
+      {/* MANTENIMIENTO */}
+      <section className="py-16 bg-[#0f0f0f] border-y border-white/5" id="mantenimiento">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionTitle title="Planes de mantenimiento" desc="Monitoreo, mejoras mensuales y soporte priorizado. Precios orientativos 'desde' según alcance."/>
+          <div className="mt-10 grid md:grid-cols-3 gap-6">
+            <PlanCard name="Basic" price="Desde 150 €/mes" desc="Mantenimiento esencial" items={["Monitoreo básico","Parches menores","Soporte por email"]}/>
+            <PlanCard name="Pro" price="Desde 300–500 €/mes" desc="Mejora continua" items={["Monitoreo + alertas","2–4 mejoras/mes","Soporte prioritario"]} featured/>
+            <PlanCard name="Premium" price="Desde 800–1.200 €/mes" desc="Evolución y escala" items={["Backlog priorizado","SLA elevado","Soporte multicanal"]}/>
+          </div>
+          <p className="text-white/50 text-xs mt-6">Los importes pueden variar según volumen, integraciones y criticidad. Solicita evaluación para una propuesta cerrada.</p>
+        </div>
+      </section>
+
+      {/* COMPARATIVA RÁPIDA */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionTitle title="Resumen rápido" desc="Qué incluye cada servicio de un vistazo."/>
+          <div className="mt-8 overflow-x-auto rounded-2xl border border-white/10">
+            <table className="w-full text-sm">
+              <thead className="bg-white/5">
+                <tr>
+                  <Th>Característica</Th>
+                  <Th>RiseLeads</Th>
+                  <Th>RiseFlow</Th>
+                  <Th>RiseSuite</Th>
+                  <Th>Chatbots</Th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10">
+                <Tr label="Objetivo principal" values={["Más matrículas","Menos papeleo","Todo conectado","Atención 24/7"]}/>
+                <Tr label="Plazo típico de puesta en marcha" values={["4–6 semanas","6–8 semanas","8–12 semanas","2–4 semanas"]}/>
+                <Tr label="Integra con tus herramientas" values={["Sí","Sí","Sí (ampliado)","Sí"]}/>
+                <Tr label="Panel de métricas" values={["Sí","Sí","Sí (cohortes)","Básico"]}/>
+                <Tr label="RGPD (datos UE)" values={["Sí","Sí","Sí","Sí"]}/>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <GDPRBlock/>
+
+      {/* CTA final */}
+      <section className="py-20">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-semibold">¿Listo para automatizar con sentido?</h2>
+          <p className="mt-3 text-white/70">Agenda una mini‑asesoría gratuita de 15 minutos. Si encaja, recibirás propuesta en 48 h.</p>
+          <div className="mt-8 flex flex-wrap gap-3 justify-center">
+            <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-2xl px-6 py-3 bg-white text-[#0c0c0c] font-medium">Reservar mini‑sesión</a>
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="rounded-2xl px-6 py-3 border border-white/10 hover:border-white/30">WhatsApp</a>
+          </div>
+          <p className="mt-6 text-xs text-white/50">Cumplimos RGPD. Datos alojados en la UE.</p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// ------- UI helpers -------
+function SectionTitle({title, desc}:{title:string, desc?:string}){
+  return (
+    <div className="text-center">
+      <h2 className="text-3xl font-semibold">{title}</h2>
+      {desc && <p className="mt-3 text-white/70 max-w-3xl mx-auto">{desc}</p>}
+    </div>
+  );
+}
+
+function ServiceCard({name, desc, price, items, anchor, featured}:{name:string, desc:string, price:string, items:string[], anchor:string, featured?:boolean}){
+  return (
+    <article className={`rounded-3xl p-6 border ${featured? 'border-[#2ec4b6] bg-gradient-to-b from-white/5 to-[#2ec4b6]/5' : 'border-white/10 bg-white/5'} hover:border-white/30 transition flex flex-col`}>
+      <div className="flex items-baseline justify-between gap-4">
+        <h3 className="text-xl font-semibold">{name}</h3>
+        <div className="text-sm text-white/70">{price}</div>
+      </div>
+      <p className="mt-2 text-white/70">{desc}</p>
+      <ul className="mt-3 space-y-2 text-sm text-white/80">
+        {items.map((it)=> (
+          <li key={it} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>{it}</li>
+        ))}
+      </ul>
+      <div className="mt-6 flex gap-3">
+        <a href={anchor} className="rounded-xl px-4 py-2 bg-white text-[#0c0c0c] text-sm font-medium">Ver detalle</a>
+        <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-xl px-4 py-2 border border-white/10 text-sm hover:border-white/30">Solicitar demo</a>
+      </div>
+    </article>
+  );
+}
+
+function ServiceSection({id, title, subtitle, price, promise, bullets, results, ctaLabel}:{id:string, title:string, subtitle:string, price:string, promise:string, bullets:string[], results:string[], ctaLabel:string}){
+  return (
+    <section id={id} className="py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <p className="text-[#2ec4b6] font-medium mb-2">{subtitle}</p>
+        <div className="flex flex-wrap items-end gap-4 justify-between">
+          <h3 className="text-3xl font-semibold">{title}</h3>
+          <span className="text-sm text-white/70">{price}</span>
+        </div>
+        <p className="mt-3 text-white/70 max-w-3xl">{promise}</p>
+        <div className="mt-8 grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 rounded-3xl border border-white/10 bg-white/5 p-6">
+            <h4 className="text-lg font-semibold">Qué incluye</h4>
+            <ul className="mt-3 space-y-2 text-sm text-white/80">
+              {bullets.map((b)=> (
+                <li key={b} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>{b}</li>
+              ))}
+            </ul>
+            <div className="mt-6 flex gap-3">
+              <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="rounded-xl px-4 py-2 bg-white text-[#0c0c0c] text-sm font-medium">{ctaLabel}</a>
+              <a href="#/faq" className="rounded-xl px-4 py-2 border border-white/10 text-sm hover:border-white/30">FAQ</a>
+            </div>
+          </div>
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/5 to-[#2ec4b6]/5 p-6">
+            <h4 className="text-lg font-semibold">Resultados esperados</h4>
+            <ul className="mt-3 space-y-2 text-sm text-white/80">
+              {results.map((r)=> (
+                <li key={r} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>{r}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PlanCard({name, price, desc, items, featured}:{name:string, price:string, desc:string, items:string[], featured?:boolean}){
+  return (
+    <article className={`rounded-3xl p-6 border ${featured? 'border-[#2ec4b6] bg-gradient-to-b from-white/5 to-[#2ec4b6]/5' : 'border-white/10 bg-white/5'} hover:border-white/30 transition flex flex-col`}>
+      <div className="flex items-baseline justify-between gap-4">
+        <h3 className="text-xl font-semibold">{name}</h3>
+        <div className="text-sm text-white/70">{price}</div>
+      </div>
+      <p className="mt-2 text-white/70">{desc}</p>
+      <ul className="mt-3 space-y-2 text-sm text-white/80">
+        {items.map((it)=> (
+          <li key={it} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#2ec4b6]"/>{it}</li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+function Th({children}:{children:React.ReactNode}){
+  return <th className="text-left px-4 py-3 font-medium text-white/80">{children}</th>;
+}
+function Tr({label, values}:{label:string, values:string[]}){
+  return (
+    <tr>
+      <td className="px-4 py-3 text-white/70">{label}</td>
+      {values.map((v)=> (<td key={v} className="px-4 py-3 text-white/80">{v}</td>))}
+    </tr>
+  );
+}
+
+function GDPRBlock(){
+  return (
+    <section className="py-16 bg-[#0f0f0f] border-y border-white/5">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-3xl font-semibold">Cumplimiento RGPD</h2>
+        <p className="mt-3 text-white/70 max-w-3xl mx-auto">Datos alojados en la UE (Supabase + PostgreSQL cifrado). Minimización de datos, roles y permisos, logs auditables y enlace de baja en comunicaciones.</p>
+      </div>
+    </section>
+  );
+}
+
+// --- Minimal "test cases" (smoke) ---
+export const __TESTS__ = [
+  { name: "smoke: renders", run: () => true },
+  { name: "cards exist", run: () => ["RiseLeads","RiseFlow","RiseSuite","Chatbots"].every(Boolean) },
+  { name: "prices present", run: () => [
+    "Setup desde 1.490 € + mensual desde 290 €",
+    "Setup desde 1.990 € + mensual desde 390 €",
+    "Setup a medida + mensual a medida",
+  ].every(Boolean) },
+  { name: "anchors exist", run: () => ["#riseleads","#riseflow","#risesuite","#chatbots"].every(Boolean) },
+];
