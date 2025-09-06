@@ -13,6 +13,7 @@
  const routes = {
    home: "/",
    about: "/sobre-nosotros",
+ }
 +  servicios: "/servicios",
    chatbots: "/desarrollo-de-chatbots",
    riseleads: "/riseleads",
@@ -20,6 +21,9 @@
 @@ .. @@
    const page = useMemo(()=>{
      switch(path){
+     }
+   }
+   )
 -      case routes.about: return <AboutPage/>;
 +      case routes.about: return <SobreNosotrosPageNuevo/>;
 +      case routes.servicios: return <ServiciosPageNuevo/>;
